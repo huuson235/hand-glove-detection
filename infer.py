@@ -1,22 +1,25 @@
 import onnxruntime as ort
 import time
 import cv2
-import torch
 import numpy as np
 
+# import torch
 
 class YoloNAS_Onnx:
     def __init__(self, onnx_model=""):
-        providers = [
-            (
-                "CUDAExecutionProvider",
-                {
-                    "device_id": torch.cuda.current_device(),
-                    "user_compute_stream": str(torch.cuda.current_stream().cuda_stream),
-                },
-                "CPUExecutionProvider",
-            ),
-        ]
+        providers = [ "CUDAExecutionProvider", "CPUExecutionProvider" ]
+
+        # Nếu KO chạy dc CUDAExecutionProvider, thì dùng cuda_stream của pytorch bên dưới
+        # providers = [(
+        #         "CUDAExecutionProvider",
+        #         {
+        #             "device_id": torch.cuda.current_device(),
+        #             "user_compute_stream": str(torch.cuda.current_stream().cuda_stream),
+        #         }
+        #     )
+        # ]
+
+        
         self.session = ort.InferenceSession(onnx_model, providers=providers)
         self.inputs = [o.name for o in self.session.get_inputs()]
         self.outputs = [o.name for o in self.session.get_outputs()]
