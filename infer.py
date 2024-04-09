@@ -139,7 +139,7 @@ if __name__ == "__main__":
     count = 0
     skip_frame = 1
 
-    writer = cv2.VideoWriter( f"demo-glove-hand-v3.avi", cv2.VideoWriter_fourcc(*"XVID"), int(fps), (1280, 720))
+    # writer = cv2.VideoWriter( f"demo-glove-hand-v3.avi", cv2.VideoWriter_fourcc(*"XVID"), int(fps), (1280, 720))
 
     cv2.namedWindow('frame')
     cv2.setMouseCallback('frame', on_click)
@@ -153,8 +153,8 @@ if __name__ == "__main__":
         _, img = yolo_glove_hand.infer(img, threshold=0.4, log=False)
 
         img = cv2.resize(img, (1280, 720))
-        writer.write(img)
-        # cv2.imshow("frame", img)
+        # writer.write(img)
+        cv2.imshow("frame", img)
         cv2.waitKey(1)
         count = 0
 
